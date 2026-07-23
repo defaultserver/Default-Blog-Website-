@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>कलम — Blogs jo alag alag kahaniyaan sunaate hain</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Literata:ital,opsz,wght@0,16..30,400;0,16..30,500;1,16..30,400&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1B2A4A;
+    --paper:#EDE6D6;
+    --paper-2:#E4DAC4;
+    --seal:#B33A3A;
+    --gold:#C9A227;
+    --charcoal:#2B2B2B;
+    --line: rgba(27,42,74,0.18);
+
+    --cat-tech:#3E6259;
+    --cat-travel:#B33A3A;
+    --cat-life:#8B5E34;
+    --cat-food:#C9A227;
+    --cat-mann:#5B4B8A;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    background-image:
+      radial-gradient(rgba(27,42,74,0.035) 1px, transparent 1px);
+    background-size: 14px 14px;
+    color:var(--charcoal);
+    font-family:'Literata', serif;
+    min-height:100vh;
+  }
+
+  ::selection{ background: var(--gold); color:var(--ink); }
+
+  a{ color:inherit; }
+
+  .wrap{
+    max-width:980px;
+    margin:0 auto;
+    padding: 36px 24px 80px;
+  }
+
+  /* ---------- Header / Logo ---------- */
+  header.site{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding-bottom:22px;
+    border-bottom: 2px solid var(--ink);
+    margin-bottom: 34px;
+    flex-wrap:wrap;
+    gap:16px;
+  }
+
+  .logo{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    cursor:pointer;
+    user-select:none;
+  }
+  .logo svg{ width:46px; height:46px; flex-shrink:0; }
+  .logo .word{
+    font-family:'Fraunces', serif;
+    font-weight:700;
+    font-size:2.1rem;
+    color:var(--ink);
+    letter-spacing:0.5px;
+    line-height:1;
+  }
+  .logo .tag{
+    display:block;
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:0.68rem;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    color:var(--seal);
+    margin-top:4px;
+    font-weight:600;
+  }
+
+  nav.filters{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+  .chip{
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:0.78rem;
+    font-weight:500;
+    padding:7px 14px;
+    border-radius:999px;
+    border:1.5px solid var(--ink);
+    background:transparent;
+    color:var(--ink);
+    cursor:pointer;
+    transition: all .18s ease;
+  }
+  .chip:hover{ background: rgba(27,42,74,0.08); }
+  .chip.active{ background:var(--ink); color:var(--paper); }
+
+  /* ---------- Blog grid (list view) ---------- */
+  #listView h1.intro{
+    font-family:'Fraunces', serif;
+    font-size:1.15rem;
+    font-weight:500;
+    font-style:italic;
+    color:var(--ink);
+    margin: 0 0 28px;
+    max-width: 60ch;
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap:22px;
+  }
+
+  .card{
+    background: var(--paper-2);
+    border:1px solid var(--line);
+    border-radius: 4px;
+    padding:22px 20px 20px;
+    position:relative;
+    cursor:pointer;
+    transition: transform .2s ease, box-shadow .2s ease;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  .card:hover{
+    transform: translateY(-4px);
+    box-shadow: 6px 6px 0 var(--ink);
+  }
+  .card:focus-visible{
+    outline: 3px solid var(--seal);
+    outline-offset:2px;
+  }
+
+  .seal{
+    width:40px; height:40px;
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:0.62rem;
+    font-weight:600;
+    color:#fff;
+    letter-spacing:0.5px;
+    text-transform:uppercase;
+    text-align:center;
+    box-shadow: 0 0 0 3px var(--paper-2), 0 0 0 4px currentColor;
+    flex-shrink:0;
+  }
+
+  .card h2{
+    font-family:'Fraunces', serif;
+    font-size:1.3rem;
+    font-weight:600;
+    margin:0;
+    color:var(--ink);
+    line-height:1.25;
+  }
+  .card p.excerpt{
+    font-size:0.92rem;
+    line-height:1.5;
+    color:#3a3a3a;
+    margin:0;
+    flex-grow:1;
+  }
+  .card .meta{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:0.72rem;
+    color:#6b6b6b;
+    border-top: 1px dashed var(--line);
+    padding-top:10px;
+    margin-top:2px;
+  }
+  .card .readmore{
+    font-weight:600;
+    color:var(--seal);
+  }
+
+  /* ---------- Reading view ---------- */
+  #readView{ display:none; }
+  .back-btn{
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:0.85rem;
+    font-weight:600;
+    background:none;
+    border:none;
+    color:var(--ink);
+    cursor:pointer;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    margin-bottom: 26px;
+    padding:0;
+  }
+  .back-btn:hover{ color:var(--seal); }
+
+  article.post{
+    background: var(--paper-2);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding: 40px clamp(20px, 6vw, 64px);
+  }
+
+  .post .cat-row{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:18px;
+  }
+  .post .cat-row .seal{ width:34px; height:34px; font-size:0.55rem; }
+  .post .cat-label{
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:0.78rem;
+    font-weight:600;
+    letter-spacing:1px;
+    text-transform:uppercase;
+  }
+
+  .post h1{
+    font-family:'Fraunces', serif;
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight:700;
+    color:var(--ink);
+    line-height:1.15;
+    margin: 0 0 10px;
+  }
+  .post .sub{
+    font-style:italic;
+    color:#555;
+    font-size:1.05rem;
+    margin:0 0 18px;
+  }
+  .post .meta{
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:0.78rem;
+    color:#6b6b6b;
+    border-bottom:2px solid var(--ink);
+    padding-bottom:20px;
+    margin-bottom:28px;
+  }
+  .post .body p{
+    font-size:1.05rem;
+    line-height:1.85;
+    margin: 0 0 20px;
+    color:#2b2b2b;
+  }
+  .post .body p:first-of-type::first-letter{
+    font-family:'Fraunces', serif;
+    font-size:3.4rem;
+    font-weight:700;
+    float:left;
+    line-height:0.8;
+    padding: 6px 8px 0 0;
+    color:var(--ink);
+  }
+
+  footer.site{
+    text-align:center;
+    margin-top:60px;
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:0.75rem;
+    color:#8a8a8a;
+  }
+
+  @media (max-width:520px){
+    header.site{ flex-direction:column; align-items:flex-start; }
+    article.post{ padding: 28px 18px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="site">
+    <div class="logo" id="logoBtn" tabindex="0" role="button" aria-label="Home par jaayein">
+      <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 52C12 52 20 20 44 10C48 8 54 10 54 10C54 10 52 16 48 24C40 40 12 52 12 52Z" fill="#1B2A4A"/>
+        <path d="M12 52L22 42" stroke="#B33A3A" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="47" cy="15" r="3" fill="#C9A227"/>
+      </svg>
+      <div>
+        <span class="word">कलम</span>
+        <span class="tag">Kalam · roz nayi kahani</span>
+      </div>
+    </div>
+    <nav class="filters" id="filterNav"></nav>
+  </header>
+
+  <!-- LIST VIEW -->
+  <section id="listView">
+    <h1 class="intro">Yahaan har blog apni alag duniya leke aata hai — tech se lekar khaane tak, safar se lekar dil ki baaton tak. Jo pasand aaye, uska logo khol kar poora padhein.</h1>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <!-- READ VIEW -->
+  <section id="readView">
+    <button class="back-btn" onclick="showList()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Saare blogs par wapas
+    </button>
+    <article class="post" id="postContent"></article>
+  </section>
+
+  <footer class="site">कलम — likhne wale alag, kahaniyaan alag, par padhne ka mazaa ek jaisa.</footer>
+</div>
+
+<script>
+const CATS = {
+  tech:   { label:"Tech",   color:"var(--cat-tech)",   abbr:"TC" },
+  travel: { label:"Safar",  color:"var(--cat-travel)", abbr:"SF" },
+  life:   { label:"Zindagi",color:"var(--cat-life)",   abbr:"ZG" },
+  food:   { label:"Khana",  color:"var(--cat-food)",   abbr:"KH" },
+  mann:   { label:"Mann ki",color:"var(--cat-mann)",   abbr:"MK" },
+};
+
+const posts = [
+  {
+    id:1, cat:"tech",
+    title:"AI mere ghar ki chai bhi bana sakta hai?",
+    sub:"Automation ke zamane mein chhoti chhoti cheezein badal rahi hain",
+    excerpt:"Smart plug se leke voice assistant tak — maine apne poore kitchen ko ek weekend mein 'smart' banane ki koshish ki. Kya sach mein zaroorat hai itni technology ki?",
+    date:"12 July 2026", read:"5 min",
+    body:[
+      "Pichle weekend maine socha ki apne ghar ko thoda 'smart' banaya jaaye. Ek smart plug, ek voice assistant, aur bahut saari umeedein leke maine shuru kiya.",
+      "Pehla din to sirf setup karne mein hi nikal gaya. Wifi se connect karna, app download karna, phir permissions dena — jitna simple lagta hai utna hai nahi.",
+      "Lekin jab teesre din maine sirf bol kar apni chai ka paani garam karwaya, tab samajh aaya ki ye chhoti si suvidha kitni badi baat hai. Technology zaroorat se zyada complex nahi honi chahiye — bas thoda useful honi chahiye.",
+      "Ab main soch raha hoon ki agla kaunsa kaam AI ko de doon. Shayad kapde tehene ka kaam bhi kisi din ho hi jayega."
+    ]
+  },
+  {
+    id:2, cat:"travel",
+    title:"Spiti ki sadkon par akela",
+    sub:"Jahan network nahi lekin sukoon bharpoor hai",
+    excerpt:"Kaza se Chandratal tak ka safar, jahan har mod par ek naya pahad aur har raat aasman bhar jaata tha taaron se.",
+    date:"3 July 2026", read:"7 min",
+    body:[
+      "Manali se nikalte waqt mausam saaf tha, lekin Kunzum Pass tak pahunchte pahunchte baadal neeche aa chuke the. Sadak sirf kankad-patthar ki thi, aur us par akele gaadi chalana ek alag hi anubhav tha.",
+      "Kaza mein raat ruka, wahan ke ek chhoti dukaan wale ne bataya ki sardiyon mein poora gaon bahar chala jaata hai, kyunki barfbaari mein raste band ho jaate hain.",
+      "Chandratal ke paas jab tent laga, tab pehli baar itna saaf aasman dekha ki lagaa jaise taare haath se chhoo sakta hoon. Network wahan bilkul nahi tha, aur shayad wahi is jagah ki sabse badi khoobsurati thi.",
+      "Wapas aakar sabse pehle jo baat samajh aayi — kabhi kabhi disconnect hona hi asli connect hona hota hai."
+    ]
+  },
+  {
+    id:3, cat:"food",
+    title:"Nani ke haathon ki dal aur uska raaz",
+    sub:"Ek recipe jo kabhi kitaab mein nahi likhi gayi",
+    excerpt:"Har baar poochne par nani kehti thi 'andaaz se daalti hoon' — is baar maine zid karke poora tareeka likh hi liya.",
+    date:"28 June 2026", read:"4 min",
+    body:[
+      "Bachpan se sunta aaya hoon ki nani ki dal ka swaad kisi restaurant mein nahi milta. Jab bhi poochta 'kitna namak daala', jawab hota tha 'bas andaaz se'.",
+      "Is baar maine tay kiya ki poori vidhi note karke rahunga. Pata chala ki raaz namak mein nahi, balki dhime aanch par ghante bhar pakaane mein tha.",
+      "Dal ko jab tadka lagta hai, tab wo ek chutki hing zaroor daalti hain — ye cheez kisi recipe website par nahi milegi.",
+      "Ab jab bhi dal banata hoon, wahi purani khushbu yaad dila deti hai ki kuch cheezein time aur dhyan maangti hain, shortcut nahi."
+    ]
+  },
+  {
+    id:4, cat:"mann",
+    title:"Jab kaam chhoड़ने ka faisla lena mushkil ho",
+    sub:"Comfort aur growth ke beech ka pul",
+    excerpt:"Teen saal ek hi jagah kaam karne ke baad, mann mein ye sawal baar baar aata raha — 'kya main yahi rehna chahta hoon?'",
+    date:"15 June 2026", read:"6 min",
+    body:[
+      "Kabhi kabhi sabse mushkil faisla wo hota hai jo kisi bade sankat se nahi, balki ek chhoti si bechaini se shuru hota hai. Mera aisa hi ek daur chal raha tha.",
+      "Kaam theek tha, log achhe the, salary bhi thik-thaak — phir bhi andar kahin ek awaaz keh rahi thi ki kuch adhoora reh gaya hai.",
+      "Maine kai logon se baat ki, kai raat neend nahi aayi, aur aakhir mein samjha ki safety aur satisfaction dono alag cheezein hain. Dono zaroori hain, lekin dono ek saath milna zaroori nahi.",
+      "Faisla abhi bhi poora nahi hua hai, lekin kam se kam ab sawal saaf hai — aur shayad wahi sabse bada kadam hota hai."
+    ]
+  },
+  {
+    id:5, cat:"tech",
+    title:"Chhote startups AI se kya seekh sakte hain",
+    sub:"Bina bade budget ke bhi smart kaam kaise ho",
+    excerpt:"Do dost, ek laptop, aur AI tools ka sahi istemaal — kaise ek chhoti si team bade kaam kar sakti hai.",
+    date:"5 June 2026", read:"5 min",
+    body:[
+      "Jab hamne apna chhota sa startup shuru kiya, tab budget itna nahi tha ki alag alag kaam ke liye log rakh sakein. Design, content, customer support — sab kuch do logon ko hi sambhalna tha.",
+      "Yahin par AI tools ne kaafi madad ki — chhote drafts likhna, code ke bugs dhoondhna, ya customer ke sawaalon ke jawab taiyar karna, sab tez ho gaya.",
+      "Lekin ek baat samajh aayi — AI sirf tool hai, faisla hamesha insaan ko hi lena padta hai. Jaldi kaam hua, lekin soch-samajh kar kaam karna abhi bhi zaroori tha.",
+      "Aaj hamari team badi ho chuki hai, lekin wahi shuruaati aadat — smart tareeke se kaam karna — abhi bhi kaayam hai."
+    ]
+  },
+  {
+    id:6, cat:"travel",
+    title:"Local train mein Mumbai ko samajhna",
+    sub:"Bheed mein bhi ek tarteeb chhupi hoti hai",
+    excerpt:"Pehli baar Mumbai local mein safar karte waqt dara hua tha, lekin kuch dinon mein hi samajh aa gaya ki ye shehar hi asli teacher hai.",
+    date:"20 May 2026", read:"4 min",
+    body:[
+      "Naya-naya Mumbai aaya tha jab pehli baar local train mein chadha. Bheed dekh kar laga ki shayad chadhna hi mushkil hoga.",
+      "Lekin kuch hafton mein hi samajh aa gaya ki is bheed mein bhi ek chhupi hui tarteeb hai — log jaante hain kahan khada hona hai, kab utarna hai, kaise jagah banani hai.",
+      "Sabse zyada jo baat pasand aayi wo thi log — kisi ajnabi se bhi baat kar lena, kisi ko seat de dena, ya raaste mein hi kisi ka haal-chaal pooch lena.",
+      "Ab jab bhi platform par khada hota hoon, laga hai ki ye shehar sikhata hai ki bheed mein bhi apna raasta kaise dhoondha jaaye."
+    ]
+  }
+];
+
+const grid = document.getElementById('grid');
+const filterNav = document.getElementById('filterNav');
+let activeFilter = 'all';
+
+function renderFilters(){
+  const cats = ['all', ...Object.keys(CATS)];
+  filterNav.innerHTML = cats.map(c => {
+    const label = c === 'all' ? 'Sab' : CATS[c].label;
+    return `<button class="chip ${c===activeFilter?'active':''}" data-cat="${c}">${label}</button>`;
+  }).join('');
+  filterNav.querySelectorAll('.chip').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      activeFilter = btn.dataset.cat;
+      renderFilters();
+      renderGrid();
+    });
+  });
+}
+
+function renderGrid(){
+  const list = activeFilter === 'all' ? posts : posts.filter(p=>p.cat===activeFilter);
+  grid.innerHTML = list.map(p=>{
+    const c = CATS[p.cat];
+    return `
+    <div class="card" tabindex="0" role="button" data-id="${p.id}" style="--card-accent:${c.color}">
+      <div class="seal" style="background:${c.color}; color:${c.color}">${c.abbr}</div>
+      <h2>${p.title}</h2>
+      <p class="excerpt">${p.excerpt}</p>
+      <div class="meta">
+        <span>${p.date} · ${p.read} read</span>
+        <span class="readmore">Padhein →</span>
+      </div>
+    </div>`;
+  }).join('');
+
+  grid.querySelectorAll('.card').forEach(card=>{
+    card.addEventListener('click', ()=> openPost(parseInt(card.dataset.id)));
+    card.addEventListener('keypress', (e)=>{ if(e.key==='Enter') openPost(parseInt(card.dataset.id)); });
+  });
+}
+
+function openPost(id){
+  const p = posts.find(x=>x.id===id);
+  if(!p) return;
+  const c = CATS[p.cat];
+  const postContent = document.getElementById('postContent');
+  postContent.innerHTML = `
+    <div class="cat-row">
+      <div class="seal" style="background:${c.color}; color:${c.color}">${c.abbr}</div>
+      <span class="cat-label" style="color:${c.color}">${c.label}</span>
+    </div>
+    <h1>${p.title}</h1>
+    <p class="sub">${p.sub}</p>
+    <div class="meta">${p.date} · ${p.read} read</div>
+    <div class="body">
+      ${p.body.map(para=>`<p>${para}</p>`).join('')}
+    </div>
+  `;
+  document.getElementById('listView').style.display = 'none';
+  document.getElementById('readView').style.display = 'block';
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function showList(){
+  document.getElementById('readView').style.display = 'none';
+  document.getElementById('listView').style.display = 'block';
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+document.getElementById('logoBtn').addEventListener('click', showList);
+document.getElementById('logoBtn').addEventListener('keypress', (e)=>{ if(e.key==='Enter') showList(); });
+
+renderFilters();
+renderGrid();
+</script>
+</body>
+</html>
